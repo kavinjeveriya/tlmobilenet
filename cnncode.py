@@ -19,13 +19,13 @@ from keras.models import Model
 model= Model(inputs=model.input , outputs = top_model)
 model.summary()
 from tensorflow.keras.optimizers import Adam
-model.compile(optimizer=Adam(learning_rate=0.0001) , loss='categorical_crossentropy' , metrics=['accuracy'])
+model.compile(optimizer=Adam(learning_rate=0.001) , loss='categorical_crossentropy' , metrics=['accuracy'])
 from keras.preprocessing.image import ImageDataGenerator
 traingen = ImageDataGenerator(rescale=1./255 , zoom_range=0.2 , horizontal_flip=True ,  vertical_flip=True )
 testgen = ImageDataGenerator(rescale=1./255)
 trainset = traingen.flow_from_directory('/app/dataset/train/' , target_size=(224,224) , batch_size=32 , class_mode='categorical' )
 testset = testgen.flow_from_directory('/app/dataset/valid/' , target_size=(224,224) , batch_size=32 , class_mode='categorical' )
-model.fit(trainset , epochs=20 , validation_data=testset , steps_per_epoch=100, validation_steps=10  )
+model.fit(trainset , epochs=20 , validation_data=testset , steps_per_epoch=10, validation_steps=10  )
 model.save("/app/models_acc/model.h5")
 scores = model.evaluate(testset,verbose=1)
 print('loss',scores[0])
